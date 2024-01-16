@@ -2,18 +2,24 @@ package com.example.oauth2demo.oauth2.util.userprofile;
 
 
 import com.example.oauth2demo.oauth2.util.OAuth2Provider;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
-@NoArgsConstructor(access = lombok.AccessLevel.PRIVATE)
+@Component
+@RequiredArgsConstructor
 public class UserProfileExtractorFactory {
-    public static UserProfileExtractor get(OAuth2Provider oAuth2Provider) {
+    private final GitHubUserProfileExtractor gitHubUserProfileExtractor;
+    private final GoogleUserProfileExtractor googleUserProfileExtractor;
+    private final NaverUserProfileExtractor naverUserProfileExtractor;
+
+    public UserProfileExtractor get(OAuth2Provider oAuth2Provider) {
         switch (oAuth2Provider) {
             case GOOGLE:
-                return new GoogleUserProfileExtractor();
+                return googleUserProfileExtractor;
             case NAVER:
-                return new NaverUserProfileExtractor();
+                return naverUserProfileExtractor;
             case GITHUB:
-                return new GitHubUserProfileExtractor();
+                return gitHubUserProfileExtractor;
             default:
                 throw new IllegalArgumentException("Invalid OAuth2 Provider");
         }
